@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "homepage": "https://dnfka7723.github.io/test",
   "scripts": {
     "build": "webpack",
-    "start": "webpack serve"
+    "start": "webpack serve",
+    "predeploy":"npm run build",
+    "deploy":"gh-pages -d build"
   },
   "keywords": [],
   "author": "",
