@@ -10,12 +10,14 @@ module.exports = {
   entry: "./src/index.js",
   output: {
     filename: "bundle.js",
-    path: path.resolve(__dirname + "/build")
+    path: path.resolve(__dirname + "/build"),
   },
   devServer: {
-    contentBase: path.resolve("./build"),
-    index: "index.html",
-    port: 9000
+    static: {
+      directory: path.join(__dirname, "public"),
+    },
+    compress: true,
+    port: 9000,
     // 변경 사항 자동 적용을 위한 설정입니다
   },
   mode: "none",
@@ -24,46 +26,50 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: "/node_modules",
-        use: ['babel-loader'],
+        use: ["babel-loader"],
       },
       {
         test: /\.html$/,
         use: [
           {
             loader: "html-loader",
-            options: { minimize: true }
-          }
-        ]
+            options: { minimize: true },
+          },
+        ],
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader,'css-loader']
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
       {
         test: /\.json$/,
         type: "javascript/auto",
         loader: "file-loader",
         options: {
-          name: "model/[name].[ext]"
+          name: "model/[name].[ext]",
         },
-        include: [
-          path.resolve(__dirname, "./model")
-        ]
+        include: [path.resolve(__dirname, "./model")],
       },
       {
-        test:/\.ico$/,
-        loader:"file-loader?name=[name].[ext]",
-      }
-    ]
+        test: /\.ico$/,
+        use: [
+          {
+            loader: "file-loader",
+          },
+        ],
+      },
+    ],
+    // js, jsx, html, css 파일 번들링 관련 설정입니다
   },
   plugins: [
     new HtmlWebPackPlugin({
-      template: './public/index.html',
-      filename: 'index.html'
+      template: "./public/index.html",
+      filename: "index.html",
     }),
     new MiniCssExtractPlugin({
-      filename: 'style.css'
+      filename: "style.css",
     }),
-    new CleanWebpackPlugin()
-  ]
+    new CleanWebpackPlugin(),
+    // 플러그인 설정들입니다
+  ],
 };
